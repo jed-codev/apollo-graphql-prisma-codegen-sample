@@ -1,0 +1,18 @@
+type Post {
+  id: String
+  subject: String
+  content: String
+}
+
+input PostInput {
+  subject: String!
+  content: String!
+}
+
+input OptionsInput {
+  order: Order
+  offset: Int
+  limit: Int
+}
+
+

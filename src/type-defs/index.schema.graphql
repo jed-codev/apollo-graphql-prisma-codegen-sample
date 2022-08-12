@@ -1,0 +1,8 @@
+type Query {
+  post(id: String!): Post
+  posts(options: OptionsInput): [Post]
+}
+
+type Mutation {
+  createPost(data: PostInput!): Post
+}

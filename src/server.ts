@@ -3,13 +3,24 @@ import { ApolloServer } from "apollo-server";
 // import resolvers
 import { resolvers } from "./resolvers";
 
-// import schema
-import { typeDefs } from "./schema.graphql";
+import { loadFiles } from "@graphql-tools/load-files";
+import { DocumentNode } from "graphql";
 
-// instantiate the apollo server
-const server = new ApolloServer({ typeDefs, resolvers });
+const app = async () => {
+  const typeDefs = (await loadFiles(
+    "src/type-defs/*.schema.graphql"
+  )) as DocumentNode[];
 
-// start the graphql server
-server.listen().then(({ url }) => {
-  // console.log(`Server ready at ${url}`);
-});
+  // instantiate the apollo server
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
+
+  // start the graphql server
+  server.listen().then(({ url }) => {
+    console.log(`Server ready at ${url}`);
+  });
+};
+
+app();

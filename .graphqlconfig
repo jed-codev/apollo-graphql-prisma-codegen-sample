@@ -1,0 +1,5 @@
+{
+  "name": "Example Schema",
+  "schema": ["src/type-defs/*.schema.graphql"]
+}
+

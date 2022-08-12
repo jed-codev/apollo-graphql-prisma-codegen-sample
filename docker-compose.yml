@@ -2,26 +2,35 @@ version: "3"
 services:
   backend-service:
     container_name: backend-service 
-    image: snapraise/backend-service:latest
+    # image: snapraise/backend-service:latest
+    build: .
     ports:
       - '4000:4000'
     depends_on:
       - database-service
     volumes:
       - .:/backend_service
-      - /backend_service/node_modules
-    command: ["npm", "start"]
-  prisma-studio:
-    container_name: prisma-studio
-    image: snapraise/backend-service:latest
-    ports:
-      - '5555:5555'
-    depends_on:
-      - backend-service
-    command: bash -c 'npx prisma studio'
+      # - /backend_service/node_modules
+    # command: ["npm", "start"]
+    networks:
+      - snap-dev-network
+
+  # prisma-studio:
+  #   container_name: prisma-studio
+  #   image: snapraise/backend-service:latest
+  #   ports:
+  #     - '5555:5555'
+  #   depends_on:
+  #     - backend-service
+  #   command: bash -c 'npx prisma studio'
+
   database-service:
     container_name: database-service
     image: postgres:9.6
+    volumes:
+      - snap-data:/var/lib/postgresql/data
+    logging:
+      driver: 'none'
     ports:
       - '5432:5432'
     environment:
@@ -31,3 +40,12 @@ services:
       - POSTGRES_HOST=database-service
       - POSTGRES_PORT=5432
       - POSTGRES_HOST_AUTH_METHOD=trust
+    networks:
+      - snap-dev-network
+
+networks:
+  snap-dev-network:
+
+volumes:
+  snap-data:
+    external: true
